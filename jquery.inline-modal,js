@@ -1,0 +1,71 @@
+/* Inline Modal jQuery Plugin
+ * Usage:
+ *
+ *  $('.trigger').inlineModal({
+ *    option: value,
+ *  });
+ */
+
+(function ( $ ) {
+
+  $.fn.inlineModal = function( options ) {
+
+    // Set default options
+    var settings = $.extend({
+      container: this,
+      mode: 'below',
+      animation: 'fade',
+      animationDuration: 400,
+      oneAtATime: false,
+      targetClose: true,
+      closeLink: 'Close',
+      closePosition: 'before'
+    }, options );
+
+
+    return this.each(function() {
+
+      var $content = settings.content,
+          $container = settings.container;
+
+      $(this).click(function(e) {
+        $(this).data('modal-expanded', 'true');
+        $content.addClass('inline-modal-loaded');
+
+        if (settings.mode == 'below') {
+          $container.after($content);
+        } else if (settings.mode == 'above') {
+          $container.before($content);
+        } else if (settings.mode == 'overlay') {
+          $container.css('position', 'relative').append($content).height($content.height());
+          $content.css('position', 'absolute');
+        }
+
+        // Handle the animation settings
+        if (settings.animation == 'fade') {
+          if (settings.oneAtATime) {
+            $('.inline-modal-loaded').not($content).fadeOut(settings.animationDuration);
+            $content.delay(settings.animationDuration).fadeIn(settings.animationDuration);
+          } else {
+            $content.fadeIn(settings.animationDuration);
+          }
+        } else if (settings.animation == 'slide') {
+          if (settings.oneAtATime) {
+            $('.inline-modal-loaded').not($content).slideUp(settings.animationDuration);
+          }
+          $content.slideDown(settings.animationDuration);
+        } else if (settings.animation == 'none') {
+          if (settings.oneAtATime) {
+            $('.inline-modal-loaded').not($content).hide();
+          }
+          $content.show();
+        }
+
+        e.preventDefault();
+      });
+
+    });
+
+  };
+
+}( jQuery ));
