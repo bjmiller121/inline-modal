@@ -1,9 +1,6 @@
 /* Inline Modal jQuery Plugin
- * Usage:
  *
- *  $('.trigger').inlineModal({
- *    option: value,
- *  });
+ * By B.J. Miller - 2014 - bjmiller.net
  */
 
 (function ( $ ) {
@@ -32,6 +29,7 @@
         $(this).data('modal-expanded', 'true');
         $content.addClass('inline-modal-loaded');
 
+        // Handle positioning of the content relative to the container.
         if (settings.mode == 'below') {
           $container.after($content);
         } else if (settings.mode == 'above') {
